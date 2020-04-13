@@ -244,11 +244,17 @@
 
 		// Abigail
 		{
-			"LogName": "Abigail SVONBP -- Normal sprites",
+			"LogName": "Abigail Default",
 			"Target": "Characters/Abigail",
 			"Action": "EditImage",
 			"FromFile": "Characters/Abigail/Abigail_{{Season}}{{IndoorVariant}}{{WeatherVariant}}.png",
 			"PatchMode": "Replace"
+		},
+		{
+			"LogName": "Abigail Summer -- Rain",
+			"Target": "Characters/Abigail",
+			"Action": "EditImage",
+			"FromFile": "Characters/Abigail/Abigail_{{Season}}{{IndoorVariant}}{{WeatherVariant}}_"
 		}
 	]
 }
