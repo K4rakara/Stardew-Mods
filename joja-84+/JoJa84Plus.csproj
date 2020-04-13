@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<AssemblyName>JoJa84Plus</AssemblyName>
+		<Version>4.10.0</Version>
+		<RootNamespace>k4rakara.Stardew.JoJa84Plus</RootNamespace>
+		<TargetFramework>net452</TargetFramework>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.1.0"/>
+	</ItemGroup>
+	<!--<Import Project="..\Common\Common.projitems" Label="Shared"/>
+	<Import Project="$(SolutionDir)\common.targets" />-->
+</Project>
