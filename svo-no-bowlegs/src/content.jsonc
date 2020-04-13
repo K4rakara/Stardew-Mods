@@ -237,11 +237,14 @@
         }
 	],
 	"Changes": [
+		
 		// ========================================================================================
 		// Begin character edits.
 		// ========================================================================================
+
+		// Abigail
 		{
-			"LogName": "Abigail SVO No Bowlegs Patches",
+			"LogName": "Abigail SVONBP -- Normal sprites",
 			"Target": "Characters/Abigail",
 			"Action": "EditImage",
 			"FromFile": "Characters/Abigail/Abigail_{{Season}}{{IndoorVariant}}{{WeatherVariant}}.png",
