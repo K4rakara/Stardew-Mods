@@ -241,8 +241,11 @@
 		// Begin character edits.
 		// ========================================================================================
 		{
-			"LogName": "Abigail Patches",
-			
+			"LogName": "Abigail SVO No Bowlegs Patches",
+			"Target": "Characters/Abigail",
+			"Action": "EditImage",
+			"FromFile": "Characters/Abigail/Abigail_{{Season}}{{IndoorVariant}}{{WeatherVariant}}.png",
+			"PatchMode": "Replace"
 		}
 	]
 }
