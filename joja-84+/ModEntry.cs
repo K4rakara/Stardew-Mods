@@ -77,7 +77,7 @@ namespace JoJa84Plus
 		private List<ClickableComponent> opButtons = new List<ClickableComponent>();
 		private ClickableComponent clearButton;
 		private ClickableComponent backspaceButton;
-		private ClickableComponent enterButton;
+		private ClickableComponent zeroButton;
 		public JoJa84PlusMenu(): 
 			base(
 				Game1.viewport.Width / 2 - 256 / 2,
@@ -97,7 +97,7 @@ namespace JoJa84Plus
 			{
 				for (int ix = 0; ix < 3; ix++)
 				{
-					int buttonWidth = ((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4);
+					int buttonWidth = ((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4) - 2;
 					this.numpad.Add
 					(
 						new ClickableComponent
@@ -111,18 +111,19 @@ namespace JoJa84Plus
 									+ IClickableMenu.borderWidth
 									+ IClickableMenu.spaceToClearTopBorder
 									+ buttonWidth * iy
-									+ (Game1.smallFont.LineSpacing * 4),
-								buttonWidth,
-								buttonWidth
+									+ (Game1.smallFont.LineSpacing * 4)
+									+ (((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * 3) / 16,
+								buttonWidth - 2,
+								buttonWidth - 2
 							),
-						(Math.Abs(((3-iy)*3)+ix-2)).ToString()
+							(Math.Abs(((3-iy)*3)+ix-2)).ToString()
 						)
 					);
 				}
 			}
 
 			// Create the op buttons.
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < 6; i++)
 			{
 				int xOffset = ((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * 3;
 				this.opButtons.Add
@@ -140,8 +141,8 @@ namespace JoJa84Plus
 								+ IClickableMenu.spaceToClearTopBorder
 								+ ((xOffset) / 4) * i
 								+ (Game1.smallFont.LineSpacing * 4),
-							xOffset / 4,
-							xOffset / 4
+							xOffset / 4 - 2,
+							xOffset / 4 - 2
 						),
 						i switch
 						{
@@ -149,6 +150,8 @@ namespace JoJa84Plus
 							1 => "-",
 							2 => "X",
 							3 => "/",
+							4 => "EQ",
+							5 => ".",
 							_ => ""
 						}
 					)
@@ -166,7 +169,7 @@ namespace JoJa84Plus
 						+ IClickableMenu.borderWidth
 						+ IClickableMenu.spaceToClearTopBorder
 						+ (Game1.smallFont.LineSpacing * 2),
-					(this.widthOnScreen - IClickableMenu.borderWidth * 2) / 2,
+					(this.widthOnScreen - IClickableMenu.borderWidth * 2) / 2 - 1,
 					Game1.smallFont.LineSpacing * 2
 				),
 				"clear",
@@ -179,7 +182,7 @@ namespace JoJa84Plus
 				new Rectangle
 				(
 					this.xPositionOnScreen
-						+ 40
+						+ 41
 						+ (this.widthOnScreen - IClickableMenu.borderWidth * 2) / 2,
 					this.yPositionOnScreen
 						+ IClickableMenu.borderWidth
@@ -189,11 +192,11 @@ namespace JoJa84Plus
 					Game1.smallFont.LineSpacing * 2
 				),
 				"backspace",
-				"<"
+				"Back"
 			);
 
-			// Create the enter button.
-			this.enterButton = new ClickableComponent
+			// Create the zero button.
+			this.zeroButton = new ClickableComponent
 			(
 				new Rectangle
 				(
@@ -203,12 +206,13 @@ namespace JoJa84Plus
 						+ IClickableMenu.borderWidth
 						+ IClickableMenu.spaceToClearTopBorder
 						+ Game1.smallFont.LineSpacing * 2
-						+ (this.widthOnScreen - IClickableMenu.borderWidth * 2),
-					(this.widthOnScreen - IClickableMenu.borderWidth * 2),
+						+ (this.widthOnScreen - IClickableMenu.borderWidth * 2)
+						+ (((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * 3) / 16,
+					((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * 3,
 					Game1.smallFont.LineSpacing * 2
 				),
-				"enter",
-				"Enter"
+				"0",
+				"0"
 			);
 		}
 		public override void draw(SpriteBatch b)
@@ -287,11 +291,15 @@ namespace JoJa84Plus
 				IClickableMenu.drawTextureBox
 				(
 					b,
+					Game1.mouseCursors,
+					new Rectangle(432, 439, 9, 9),
 					button.bounds.X,
 					button.bounds.Y,
 					button.bounds.Width,
 					button.bounds.Height,
-					(button.scale >= 0f) ? Color.Wheat : Color.White
+					(button.scale != 1.0001f) ? Color.Wheat : Color.White,
+					4f,
+					false
 				);
 				Utility.drawBoldText
 				(
@@ -320,16 +328,21 @@ namespace JoJa84Plus
 				IClickableMenu.drawTextureBox
 				(
 					b,
+					Game1.mouseCursors,
+					new Rectangle(432, 439, 9, 9),
 					button.bounds.X,
 					button.bounds.Y,
 					button.bounds.Width,
 					button.bounds.Height,
-					(button.scale >= 0f) ? Color.Wheat : Color.White
+					(button.scale != 1.0001f) ? Color.Wheat : Color.White,
+					4f,
+					false
 				);
-				b.DrawString
+				Utility.drawBoldText
 				(
-					Game1.smallFont,
+					b,
 					button.name,
+					Game1.smallFont,
 					new Vector2(
 						(float)button.bounds.X
 							+ (button.bounds.Width / 2)
@@ -337,8 +350,12 @@ namespace JoJa84Plus
 						(float)button.bounds.Y
 							+ (button.bounds.Height / 2)
 							- (Game1.smallFont.MeasureString(button.name).Y / 2)
+							+ 2
 					),
-					Game1.textColor
+					Game1.textColor,
+					1f,
+					-1f,
+					2
 				);
 			}
 
@@ -346,17 +363,20 @@ namespace JoJa84Plus
 			IClickableMenu.drawTextureBox
 			(
 				b,
+				Game1.mouseCursors,
+				new Rectangle(432, 439, 9, 9),
 				this.clearButton.bounds.X,
 				this.clearButton.bounds.Y,
 				this.clearButton.bounds.Width,
 				this.clearButton.bounds.Height,
-				(this.clearButton.scale >= 0f) ? Color.Wheat : Color.White
+				(this.clearButton.scale != 1.0001f) ? Color.Wheat : Color.White,
+				4f,
+				false
 			);
-			Utility.drawTextWithShadow
+			b.DrawString
 			(
-				b,
-				this.clearButton.label,
 				Game1.smallFont,
+				this.clearButton.label,
 				new Vector2
 				(
 					(float)this.clearButton.bounds.X
@@ -373,17 +393,20 @@ namespace JoJa84Plus
 			IClickableMenu.drawTextureBox
 			(
 				b,
+				Game1.mouseCursors,
+				new Rectangle(432, 439, 9, 9),
 				this.backspaceButton.bounds.X,
 				this.backspaceButton.bounds.Y,
 				this.backspaceButton.bounds.Width,
 				this.backspaceButton.bounds.Height,
-				(this.backspaceButton.scale >= 0f) ? Color.Wheat : Color.White
+				(this.backspaceButton.scale != 1.0001f) ? Color.Wheat : Color.White,
+				4f,
+				false
 			);
-			Utility.drawTextWithShadow
+			b.DrawString
 			(
-				b,
-				this.backspaceButton.label,
 				Game1.smallFont,
+				this.backspaceButton.label,
 				new Vector2
 				(
 					(float)this.backspaceButton.bounds.X
@@ -396,31 +419,38 @@ namespace JoJa84Plus
 				Game1.textColor
 			);
 
-			// Draw the enter button.
+			// Draw the zero button.
 			IClickableMenu.drawTextureBox
 			(
 				b,
-				this.enterButton.bounds.X,
-				this.enterButton.bounds.Y,
-				this.enterButton.bounds.Width,
-				this.enterButton.bounds.Height,
-				(this.enterButton.scale >= 0f) ? Color.Wheat : Color.White
+				Game1.mouseCursors,
+				new Rectangle(432, 439, 9, 9),
+				this.zeroButton.bounds.X,
+				this.zeroButton.bounds.Y,
+				this.zeroButton.bounds.Width,
+				this.zeroButton.bounds.Height,
+				(this.zeroButton.scale != 1.0001f) ? Color.Wheat : Color.White,
+				4f,
+				false
 			);
-			Utility.drawTextWithShadow
+			Utility.drawBoldText
 			(
 				b,
-				this.enterButton.label,
+				this.zeroButton.label,
 				Game1.smallFont,
 				new Vector2
 				(
-					(float)this.enterButton.bounds.X
-						+ (this.enterButton.bounds.Width / 2)
-						- (Game1.smallFont.MeasureString(this.enterButton.label).X / 2),
-					(float)this.enterButton.bounds.Y
-						+ (this.enterButton.bounds.Height / 2)
-						- (Game1.smallFont.MeasureString(this.enterButton.name).Y / 2)
+					(float)this.zeroButton.bounds.X
+						+ (this.zeroButton.bounds.Width / 2)
+						- (Game1.smallFont.MeasureString(this.zeroButton.label).X / 2),
+					(float)this.zeroButton.bounds.Y
+						+ (this.zeroButton.bounds.Height / 2)
+						- (Game1.smallFont.MeasureString(this.zeroButton.name).Y / 2)
 				),
-				Game1.textColor
+				Game1.textColor,
+				1f,
+				-1f,
+				2
 			);
 
 			if (this.shouldDrawCloseButton()) base.draw(b);
@@ -513,6 +543,36 @@ namespace JoJa84Plus
 			}
 		}
 
+		public override void performHoverAction(int x, int y)
+		{
+			foreach(ClickableComponent button in this.numpad)
+			{
+				if (button.containsPoint(x,y))
+					button.scale = 1.0001f;
+				else
+					button.scale = 1f;
+			}
+			foreach(ClickableComponent button in this.opButtons)
+			{
+				if (button.containsPoint(x,y))
+					button.scale = 1.0001f;
+				else
+					button.scale = 1f;
+			}
+			if (this.zeroButton.containsPoint(x,y))
+				this.zeroButton.scale = 1.0001f;
+			else
+				this.zeroButton.scale = 1f;
+			if (this.clearButton.containsPoint(x,y))
+				this.clearButton.scale = 1.0001f;
+			else
+				this.clearButton.scale = 1f;
+			if (this.backspaceButton.containsPoint(x,y))
+				this.backspaceButton.scale = 1.0001f;
+			else
+				this.backspaceButton.scale = 1f;
+		}
+
 		public override void receiveLeftClick(int x, int y, bool playSound)
 		{
 			foreach(ClickableComponent button in this.numpad)
@@ -552,16 +612,34 @@ namespace JoJa84Plus
 								this.currentInput = true;
 							this.op = Operation.Divide;
 							break;
+						case "EQ":
+							this.DoCalculation();
+							break;
+						case ".":
+							if (!this.currentInput)
+								this.inputA += ".";
+							else
+								this.inputB += ".";
+							break;
 					}
+					Game1.playSound("smallSelect");
 				}
 			}
-			if (this.enterButton.containsPoint(x, y)) this.DoCalculation();
+			if (this.zeroButton.containsPoint(x, y))
+			{
+				if (!this.currentInput)
+					this.inputA += "0";
+				else
+					this.inputB += "0";
+				Game1.playSound("smallSelect");
+			}
 			if (this.clearButton.containsPoint(x, y))
 			{
 				this.result = 0;
 				this.inputA = "";
 				this.inputB = "";
 				this.currentInput = false;
+				Game1.playSound("thudStep");
 			}
 			if (this.backspaceButton.containsPoint(x, y))
 			{
@@ -573,6 +651,7 @@ namespace JoJa84Plus
 				{
 					if (this.inputB.Length >= 1) this.inputB = this.inputB.Substring(0, this.inputB.Length - 1);
 				}
+				Game1.playSound("smallSelect");
 			}
 		}
 
