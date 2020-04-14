@@ -257,7 +257,7 @@ namespace JoJa84Plus
 					+ (this.op switch {
 						Operation.Add => "+",
 						Operation.Subtract => "-",
-						Operation.Multiply => "*",
+						Operation.Multiply => "X",
 						Operation.Divide => "/",
 						Operation.None => "ERR",
 						_ => "ERR",
@@ -308,8 +308,8 @@ namespace JoJa84Plus
 							- (Game1.smallFont.MeasureString(button.name).Y / 2)
 					),
 					Game1.textColor,
-					(float)1.0,
-					(float)-1.0,
+					1f,
+					-1f,
 					2
 				);
 			}
@@ -342,6 +342,7 @@ namespace JoJa84Plus
 				);
 			}
 
+			// Draw the clear button.
 			IClickableMenu.drawTextureBox
 			(
 				b,
@@ -367,6 +368,8 @@ namespace JoJa84Plus
 				),
 				Game1.textColor
 			);
+
+			// Draw the backspace button.
 			IClickableMenu.drawTextureBox
 			(
 				b,
@@ -393,6 +396,7 @@ namespace JoJa84Plus
 				Game1.textColor
 			);
 
+			// Draw the enter button.
 			IClickableMenu.drawTextureBox
 			(
 				b,
@@ -423,9 +427,7 @@ namespace JoJa84Plus
 			if (!Game1.options.hardwareCursor) b.Draw(Game1.mouseCursors, new Vector2(Game1.getMouseX(), Game1.getMouseY()), Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, Game1.options.gamepadControls ? 44 : 0, 16, 16), Color.White, 0f, Vector2.Zero, 4f + Game1.dialogueButtonScale / 150f, SpriteEffects.None, 1f);
 			
 			this.timer++;
-			if (this.timer >= 32) {
-				this.timer = 0;
-			}
+			if (this.timer >= 32) this.timer = 0;
 		}
 		public override void receiveKeyPress(Keys key)
 		{
@@ -478,7 +480,7 @@ namespace JoJa84Plus
 					case Keys.Multiply:
 						if (!this.currentInput)
 							this.currentInput = true;
-						this.op = Operation.Divide;
+						this.op = Operation.Multiply;
 						break;
 					case Keys.Divide:
 						if (!this.currentInput)
@@ -494,21 +496,86 @@ namespace JoJa84Plus
 						this.inputB = "";
 						this.currentInput = false;
 						break;
+					case Keys.Back:
+						if (!this.currentInput)
+						{
+							if (this.inputA.Length >= 1) this.inputA = this.inputA.Substring(0, this.inputA.Length - 1);
+						}
+						else
+						{
+							if (this.inputB.Length >= 1) this.inputB = this.inputB.Substring(0, this.inputB.Length - 1);
+						}
+						break;
 					case Keys.Escape:
 						this.exitThisMenu();
 						break;
 				}
 			}
 		}
-		public override void performHoverAction(int x, int y) {
+
+		public override void receiveLeftClick(int x, int y, bool playSound)
+		{
 			foreach(ClickableComponent button in this.numpad)
 			{
 				if (button.containsPoint(x, y))
-					button.scale = 1f;
+				{
+					if (this.currentInput)
+						this.inputB += button.name;
+					else
+						this.inputA += button.name;
+					Game1.playSound("smallSelect");
+				}
+			}
+			foreach(ClickableComponent button in this.opButtons)
+			{
+				if (button.containsPoint(x, y))
+				{
+					switch(button.name)
+					{
+						case "+":
+							if (!this.currentInput)
+								this.currentInput = true;
+							this.op = Operation.Add;
+							break;
+						case "-":
+							if (!this.currentInput)
+								this.currentInput = true;
+							this.op = Operation.Subtract;
+							break;
+						case "X":
+							if (!this.currentInput)
+								this.currentInput = true;
+							this.op = Operation.Multiply;
+							break;
+						case "/":
+							if (!this.currentInput)
+								this.currentInput = true;
+							this.op = Operation.Divide;
+							break;
+					}
+				}
+			}
+			if (this.enterButton.containsPoint(x, y)) this.DoCalculation();
+			if (this.clearButton.containsPoint(x, y))
+			{
+				this.result = 0;
+				this.inputA = "";
+				this.inputB = "";
+				this.currentInput = false;
+			}
+			if (this.backspaceButton.containsPoint(x, y))
+			{
+				if (!this.currentInput)
+				{
+					if (this.inputA.Length >= 1) this.inputA = this.inputA.Substring(0, this.inputA.Length - 1);
+				}
 				else
-					button.scale = 0f;
+				{
+					if (this.inputB.Length >= 1) this.inputB = this.inputB.Substring(0, this.inputB.Length - 1);
+				}
 			}
 		}
+
 		private void DoCalculation()
 		{
 			if (!this.currentInput) 
@@ -539,6 +606,7 @@ namespace JoJa84Plus
 						break;
 				}
 				this.inputA = this.result.ToString();
+				if (this.inputA == "NaN") this.inputA = "";
 				this.inputB = "";
 				this.currentInput = false;
 			}
