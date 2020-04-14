@@ -19,9 +19,10 @@ namespace JoJa84Plus
 		public override void Entry(IModHelper helper)
 		{
 			helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+			helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
 		}
 
-		private void OnSaveLoaded()
+		private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
 		{
 			this.menu = new JoJa84PlusMenu();
 		}
@@ -38,8 +39,7 @@ namespace JoJa84Plus
 				this.CalcOpen = !this.CalcOpen;
 				if (this.CalcOpen)
 				{
-					JoJa84PlusMenu menu = new JoJa84PlusMenu();
-					Game1.activeClickableMenu = menu;
+					Game1.activeClickableMenu = this.menu;
 					Game1.playSound("bigSelect");
 				}
 				else 
@@ -503,14 +503,10 @@ namespace JoJa84Plus
 		public override void performHoverAction(int x, int y) {
 			foreach(ClickableComponent button in this.numpad)
 			{
-				if (button.containsPoint(x, y) && button.visible)
-				{
+				if (button.containsPoint(x, y))
 					button.scale = 1f;
-				}
 				else
-				{
 					button.scale = 0f;
-				}
 			}
 		}
 		private void DoCalculation()
