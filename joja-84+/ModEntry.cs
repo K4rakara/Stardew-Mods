@@ -144,7 +144,7 @@ namespace JoJa84Plus {
 			}
 
 			// Draw the buttons.
-
+	
 
 			if (this.shouldDrawCloseButton()) {
 				base.draw(b);
@@ -211,6 +211,12 @@ namespace JoJa84Plus {
 						break;
 					case Keys.Enter:
 						this.DoCalculation();
+						break;
+					case Keys.Delete:
+						this.result = 0;
+						this.inputA = "";
+						this.inputB = "";
+						this.currentInput = false;
 						break;
 					case Keys.Escape:
 						this.exitThisMenu();
