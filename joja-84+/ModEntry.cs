@@ -67,22 +67,107 @@ namespace JoJa84Plus {
 		private double result = 0;
 		private string inputA = "";
 		private string inputB = "";
-		private bool enteringDecimal = false;
 		private bool currentInput = false;
 		private int widthOnScreen = 0;
 		private int heightOnScreen = 0;
 		private int timer = 0;
 		private List<ClickableComponent> numpad = new List<ClickableComponent>();
-		private Dictionary<Keys, char> numKeys = new Dictionary<Keys, char> {
-			{Keys.NumPad0, '0'},
-			{Keys.NumPad1, '1'},
-		};
+		private List<ClickableComponent> opButtons = new List<ClickableComponent>();
+		private ClickableComponent clearButton;
+		private ClickableComponent backspaceButton;
+		private ClickableComponent enterButton;
 		public JoJa84PlusMenu(): base(Game1.viewport.Width / 2 - 256 / 2, Game1.viewport.Height / 2 - 256, 256 + IClickableMenu.borderWidth * 2, 512 + IClickableMenu.borderWidth * 2, showUpperRightCloseButton: false) {
 			this.xPositionOnScreen = Game1.viewport.Width / 2 - 256 / 2;
 			this.yPositionOnScreen = Game1.viewport.Height / 2 - 256;
 			this.widthOnScreen = 256 + IClickableMenu.borderWidth * 2;
 			this.heightOnScreen = 512 + IClickableMenu.borderWidth * 2;
-			
+			for (int iy = 0; iy < 3; iy++) {
+				for (int ix = 0; ix < 3; ix++) {
+					this.numpad.Add(new ClickableComponent(
+						new Rectangle(
+							this.xPositionOnScreen
+								+ 40
+								+ (((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * ix),
+							this.yPositionOnScreen
+								+ IClickableMenu.borderWidth
+								+ IClickableMenu.spaceToClearTopBorder
+								+ (((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * iy)
+								+ (Game1.smallFont.LineSpacing * 4),
+							((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4),
+							((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4)
+						),
+						(Math.Abs(((3-iy)*3)+ix-2)).ToString()
+					));
+				}
+			}
+			for (int i = 0; i < 4; i++) {
+				this.opButtons.Add(new ClickableComponent(
+					new Rectangle(
+						this.xPositionOnScreen
+							+ 40
+							+ (((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * 3)
+							+ (((((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * 3) / 4) / 4),
+						this.yPositionOnScreen
+							+ IClickableMenu.borderWidth
+							+ IClickableMenu.spaceToClearTopBorder
+							+ ((((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * 3) / 4) * i
+							+ (Game1.smallFont.LineSpacing * 4),
+						((((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * 3) / 4),
+						((((this.widthOnScreen - IClickableMenu.borderWidth * 2) / 4) * 3) / 4)
+					),
+					i switch {
+						0 => "+",
+						1 => "-",
+						2 => "X",
+						3 => "/",
+						_ => ""
+					}
+				));
+			}
+			this.clearButton = new ClickableComponent(
+				new Rectangle(
+					this.xPositionOnScreen
+						+ 40,
+					this.yPositionOnScreen
+						+ IClickableMenu.borderWidth
+						+ IClickableMenu.spaceToClearTopBorder
+						+ (Game1.smallFont.LineSpacing * 2),
+					(this.widthOnScreen - IClickableMenu.borderWidth * 2) / 2,
+					Game1.smallFont.LineSpacing * 2
+				),
+				"clear",
+				"Clear"
+			);
+			this.backspaceButton = new ClickableComponent(
+				new Rectangle(
+					this.xPositionOnScreen
+						+ 40
+						+ (this.widthOnScreen - IClickableMenu.borderWidth * 2) / 2,
+					this.yPositionOnScreen
+						+ IClickableMenu.borderWidth
+						+ IClickableMenu.spaceToClearTopBorder
+						+ (Game1.smallFont.LineSpacing * 2),
+					(this.widthOnScreen - IClickableMenu.borderWidth * 2) / 2,
+					Game1.smallFont.LineSpacing * 2
+				),
+				"backspace",
+				"<"
+			);
+			this.enterButton = new ClickableComponent(
+				new Rectangle(
+					this.xPositionOnScreen
+						+ 40,
+					this.yPositionOnScreen
+						+ IClickableMenu.borderWidth
+						+ IClickableMenu.spaceToClearTopBorder
+						+ Game1.smallFont.LineSpacing * 2
+						+ (this.widthOnScreen - IClickableMenu.borderWidth * 2),
+					(this.widthOnScreen - IClickableMenu.borderWidth * 2),
+					Game1.smallFont.LineSpacing * 2
+				),
+				"enter",
+				"ENTER"
+			);
 		}
 		public override void draw(SpriteBatch b) {
 			if (!Game1.options.showMenuBackground) { b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.4f); }
@@ -144,7 +229,115 @@ namespace JoJa84Plus {
 			}
 
 			// Draw the buttons.
-	
+			foreach(ClickableComponent button in this.numpad) {
+				IClickableMenu.drawTextureBox(b,
+					button.bounds.X,
+					button.bounds.Y,
+					button.bounds.Width,
+					button.bounds.Height,
+					(button.scale >= 0f) ? Color.Wheat : Color.White
+				);
+				Utility.drawBoldText(b,
+					button.name,
+					Game1.smallFont,
+					new Vector2(
+						(float)button.bounds.X
+							+ (button.bounds.Width / 2)
+							- (Game1.smallFont.MeasureString(button.name).X / 2),
+						(float)button.bounds.Y
+							+ (button.bounds.Height / 2)
+							- (Game1.smallFont.MeasureString(button.name).Y / 2)
+					),
+					Game1.textColor,
+					(float)1.0,
+					(float)-1.0,
+					2
+				);
+			}
+
+			foreach(ClickableComponent button in this.opButtons) {
+				IClickableMenu.drawTextureBox(b,
+					button.bounds.X,
+					button.bounds.Y,
+					button.bounds.Width,
+					button.bounds.Height,
+					(button.scale >= 0f) ? Color.Wheat : Color.White
+				);
+				b.DrawString(Game1.smallFont,
+					button.name,
+					new Vector2(
+						(float)button.bounds.X
+							+ (button.bounds.Width / 2)
+							- (Game1.smallFont.MeasureString(button.name).X / 2),
+						(float)button.bounds.Y
+							+ (button.bounds.Height / 2)
+							- (Game1.smallFont.MeasureString(button.name).Y / 2)
+					),
+					Game1.textColor
+				);
+			}
+
+			IClickableMenu.drawTextureBox(b,
+				this.clearButton.bounds.X,
+				this.clearButton.bounds.Y,
+				this.clearButton.bounds.Width,
+				this.clearButton.bounds.Height,
+				(this.clearButton.scale >= 0f) ? Color.Wheat : Color.White
+			);
+			Utility.drawTextWithShadow(b,
+				this.clearButton.label,
+				Game1.smallFont,
+				new Vector2(
+					(float)this.clearButton.bounds.X
+						+ (this.clearButton.bounds.Width / 2)
+						- (Game1.smallFont.MeasureString(this.clearButton.label).X / 2),
+					(float)this.clearButton.bounds.Y
+						+ (this.clearButton.bounds.Height / 2)
+						- (Game1.smallFont.MeasureString(this.clearButton.name).Y / 2)
+				),
+				Game1.textColor
+			);
+			IClickableMenu.drawTextureBox(b,
+				this.backspaceButton.bounds.X,
+				this.backspaceButton.bounds.Y,
+				this.backspaceButton.bounds.Width,
+				this.backspaceButton.bounds.Height,
+				(this.backspaceButton.scale >= 0f) ? Color.Wheat : Color.White
+			);
+			Utility.drawTextWithShadow(b,
+				this.backspaceButton.label,
+				Game1.smallFont,
+				new Vector2(
+					(float)this.backspaceButton.bounds.X
+						+ (this.backspaceButton.bounds.Width / 2)
+						- (Game1.smallFont.MeasureString(this.backspaceButton.label).X / 2),
+					(float)this.backspaceButton.bounds.Y
+						+ (this.backspaceButton.bounds.Height / 2)
+						- (Game1.smallFont.MeasureString(this.backspaceButton.name).Y / 2)
+				),
+				Game1.textColor
+			);
+
+			IClickableMenu.drawTextureBox(b,
+				this.enterButton.bounds.X,
+				this.enterButton.bounds.Y,
+				this.enterButton.bounds.Width,
+				this.enterButton.bounds.Height,
+				(this.enterButton.scale >= 0f) ? Color.Wheat : Color.White
+			);
+			Utility.drawTextWithShadow(b,
+				this.enterButton.label,
+				Game1.smallFont,
+				new Vector2(
+					(float)this.enterButton.bounds.X
+						+ (this.enterButton.bounds.Width / 2)
+						- (Game1.smallFont.MeasureString(this.enterButton.label).X / 2),
+					(float)this.enterButton.bounds.Y
+						+ (this.enterButton.bounds.Height / 2)
+						- (Game1.smallFont.MeasureString(this.enterButton.name).Y / 2)
+				),
+				Game1.textColor
+			);
 
 			if (this.shouldDrawCloseButton()) {
 				base.draw(b);
@@ -221,6 +414,15 @@ namespace JoJa84Plus {
 					case Keys.Escape:
 						this.exitThisMenu();
 						break;
+				}
+			}
+		}
+		public override void performHoverAction(int x, int y) {
+			foreach(ClickableComponent button in this.numpad) {
+				if (button.containsPoint(x, y) && button.visible) {
+					button.scale = 1f;
+				} else {
+					button.scale = 0f;
 				}
 			}
 		}
