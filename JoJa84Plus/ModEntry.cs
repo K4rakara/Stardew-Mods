@@ -23,7 +23,7 @@ namespace JoJa84Plus
 			helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
 
 			// Load the JoJa 84+ logo
-			this.jojaLogo = helper.Content.Load<Texture2D>("joja84plus.png");
+			this.jojaLogo = helper.Content.Load<Texture2D>("assets/joja84plus.png");
 		}
 
 		private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
