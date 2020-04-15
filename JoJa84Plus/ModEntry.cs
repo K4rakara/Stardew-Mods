@@ -650,7 +650,7 @@ namespace JoJa84Plus
 				this.inputA = "";
 				this.inputB = "";
 				this.currentInput = false;
-				Game1.playSound("thudStep");
+				Game1.playSound("Ship");
 			}
 			if (this.backspaceButton.containsPoint(x, y))
 			{
