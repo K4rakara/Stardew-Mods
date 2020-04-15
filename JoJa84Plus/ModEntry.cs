@@ -11,14 +11,28 @@ using StardewValley.Menus;
 
 namespace JoJa84Plus
 {
+	public class ModConfig
+	{
+		public string HotKey { get; set; }
+		public ModConfig()
+		{
+			this.HotKey = "F9";
+		}
+	}
+
 	public class ModEntry: Mod
 	{
 		private Texture2D jojaLogo;
 		private bool CalcOpen = false;
+		private ModConfig Config;
 		private JoJa84PlusMenu menu;
 
 		public override void Entry(IModHelper helper)
 		{
+			// Load config.
+			this.Config = this.Helper.ReadConfig<ModConfig>();
+
+			// Add event listeners.
 			helper.Events.Input.ButtonPressed += this.OnButtonPressed;
 			helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
 
@@ -38,7 +52,7 @@ namespace JoJa84Plus
 				return;
 
 			// If the player presses F5, then open/close the calculator.
-			if (e.Button == SButton.F5)
+			if (e.Button == (SButton)Enum.Parse(typeof(SButton), this.Config.HotKey))
 			{
 				this.CalcOpen = !this.CalcOpen;
 				if (this.CalcOpen)
