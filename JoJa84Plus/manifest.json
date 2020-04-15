@@ -6,5 +6,5 @@
 	"UniqueID": "k4rakara.JoJa84Plus",
 	"EntryDll": "JoJa84Plus.dll",
 	"MinimumApiVersion": "2.10.0",
-	"UpdateKeys": []
+	"UpdateKeys": [ "Nexus:5803" ]
 }
