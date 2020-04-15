@@ -13,6 +13,7 @@ namespace JoJa84Plus
 {
 	public class ModEntry: Mod
 	{
+		private Texture2D jojaLogo;
 		private bool CalcOpen = false;
 		private JoJa84PlusMenu menu;
 
@@ -20,11 +21,14 @@ namespace JoJa84Plus
 		{
 			helper.Events.Input.ButtonPressed += this.OnButtonPressed;
 			helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+
+			// Load the JoJa 84+ logo
+			this.jojaLogo = helper.Content.Load<Texture2D>("joja84plus.png");
 		}
 
 		private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
 		{
-			this.menu = new JoJa84PlusMenu();
+			this.menu = new JoJa84PlusMenu(this.jojaLogo);
 		}
 
 		private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -78,7 +82,8 @@ namespace JoJa84Plus
 		private ClickableComponent clearButton;
 		private ClickableComponent backspaceButton;
 		private ClickableComponent zeroButton;
-		public JoJa84PlusMenu(): 
+		private Texture2D jojaLogo;
+		public JoJa84PlusMenu(Texture2D logo): 
 			base(
 				Game1.viewport.Width / 2 - 256 / 2,
 				Game1.viewport.Height / 2 - 256,
@@ -92,6 +97,8 @@ namespace JoJa84Plus
 			this.widthOnScreen = 256 + IClickableMenu.borderWidth * 2;
 			this.heightOnScreen = 512 + IClickableMenu.borderWidth * 2;
 			
+			this.jojaLogo = logo;
+
 			// Create the number-pad.
 			for (int iy = 0; iy < 3; iy++)
 			{
@@ -220,10 +227,8 @@ namespace JoJa84Plus
 			if (!Game1.options.showMenuBackground) b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.4f);
 			Game1.drawDialogueBox(xPositionOnScreen, yPositionOnScreen, widthOnScreen, heightOnScreen, speaker: false, drawOnlyBox: true);
 			// Draw JoJa watermark thing.
-			b.DrawString
-			(
-				Game1.smallFont,
-				"joja 84+",
+			b.Draw(
+				this.jojaLogo,
 				new Vector2
 				(
 					(float)this.xPositionOnScreen
@@ -233,7 +238,13 @@ namespace JoJa84Plus
 						- IClickableMenu.borderWidth 
 						- 40
 				),
-				Game1.textColor
+				new Rectangle(0, 0, 42, 16),
+				Color.White,
+				0f,
+				new Vector2(0f, 0f),
+				2f,
+				SpriteEffects.None,
+				0f
 			);
 
 			// Draw the current input.
