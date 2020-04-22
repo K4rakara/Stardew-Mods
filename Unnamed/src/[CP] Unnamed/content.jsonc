@@ -1,0 +1,19 @@
+{
+	"$schema": "https://raw.githubusercontent.com/K4rakara/schema-valley/master/schema_valley.schema.json",
+	"Format": "1.13.0",
+	"Changes": [
+		// Extended spritesheets for all characters.
+		{
+			"Action": "EditImage",
+			"Target": "Characters/Abigail",
+			"FromFile": "./assets/Characters/Abigail.png"
+		},
+
+		// Spouse cuddle event data.
+		{
+			"Action": "EditData",
+			"Target": "Data/Events/FarmHouse",
+			"FromFile": "./assets/Data/Events/spouse-cuddle-event.json"
+		}
+	]
+} 

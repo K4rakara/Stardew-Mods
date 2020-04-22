@@ -1,0 +1,56 @@
+{
+	"Meta": {
+		"Constants": {
+			"Spouse": "${argv:Spouse}",
+			"ModName": "k4rakara.Unnamed"
+		}
+	},
+	"Preconditions": [
+		{
+			"Type": "Context:Random",
+			"Number": "{{${ModName}/DoSpouseCuddleCutscene}}"
+		}
+	],
+	"Script": [
+		"Skippable",
+		{ "Type": "InitCameraAt", "X": 28, "Y": 13},
+		{ "Type": "InitMusic", "TrackId": "none" },
+		{ "Type": "InitActorAt", "Name": "farmer", "X": 27, "Y": 13, "Direction": 1 },
+		{ "Type": "SetPlayerEyes", "Eyes": 0, "Blink": -1000 },
+		{ "Type": "OffsetActorBy", "Name": "farmer", "X": 32, "Y": -8 },
+		{ "Type": "InitActorAt", "Name": "${Spouse}", "X": 29, "Y": 13, "Direction": 3 },
+		{ "Type": "ShowActorSprite", "Name": "${Spouse}", "Frame": 60 },
+		{ "Type": "OffsetActorBy", "Name": "${Spouse}", "X": -48, "Y": -8 },
+		{ "Type": "Fade", "Unfade": true },
+		{ "Type": "Pause", "Duration": 3000 },
+		{ "Type": "ShakeActor", "Name": "${Spouse}", "Duration": 500 },
+		{ "Type": "PlaySound", "SoundId": "sandyStep" },
+		{ "Type": "Pause", "Duration": 750 },
+		{ "Type": "ShakeActor", "Name": "${Spouse}", "Duration": 750 },
+		{ "Type": "PlaySound", "SoundId": "sandyStep" },
+		{ "Type": "Pause", "Duration": 1250 },
+		{ "Type": "ShowActorSprite", "Name": "${Spouse}", "Frame": 60 },
+		{ "Type": "Pause", "Duration": 125 },
+		{ "Type": "ShowActorSprite", "Name": "${Spouse}", "Frame": 61 },
+		{ "Type": "Pause", "Duration": 125 },
+		{ "Type": "ShowActorSprite", "Name": "${Spouse}", "Frame": 60 },
+		{ "Type": "Pause", "Duration": 125 },
+		{ "Type": "ShowActorSprite", "Name": "${Spouse}", "Frame": 61 },
+		{ "Type": "Pause", "Duration": 75 },
+		{ "Type": "ShowActorSprite", "Name": "${Spouse}", "Frame": 60 },
+		{ "Type": "Pause", "Duration": 75 },
+		{ "Type": "ShowActorSprite", "Name": "${Spouse}", "Frame": 61 },
+		{ "Type": "Pause", "Duration": 75 },
+		{ "Type": "ShowActorSprite", "Name": "${Spouse}", "Frame": 60 },
+		{ "Type": "Pause", "Duration": 75 },
+		{ "Type": "ShowActorSprite", "Name": "${Spouse}", "Frame": 61 },
+		{ "Type": "Pause", "Duration": 2250 },
+		{ "Type": "OffsetActorBy", "Name": "${Spouse}", "X": -8, "Y": -3 },
+		{ "Type": "PlaySound", "SoundId": "sandyStep" },
+		{ "Type": "ShowActorSprite", "Name": "${Spouse}", "Frame": 62 },
+		{ "Type": "Pause", "Duration": 750 },
+		{ "Type": "ActorEmote", "Name": "${Spouse}", "EmoteId": 20 },
+		{ "Type": "Pause", "Duration": 2000 },
+		"End"
+	]
+}

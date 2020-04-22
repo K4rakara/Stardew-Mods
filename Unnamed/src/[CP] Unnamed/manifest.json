@@ -1,0 +1,15 @@
+{
+	"Name": "Unnamed-content",
+	"Author": "k4rakara",
+	"Version": "1.0.0",
+	"Description": "?",
+	"UniqueID": "k4rakara.UnnamedContent",
+	"MinimumApiVersion": "2.10.0",
+	"UpdateKeys": [ ],
+	"ContentPackFor": {
+		"UniqueID": "Pathoschild.ContentPatcher"
+	},
+	"Dependencies": [
+		{ "UniqueID": "k4rakara.Unnamed", "IsRequired": true }
+	]
+}
