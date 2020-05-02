@@ -2,18 +2,23 @@
 	"$schema": "https://raw.githubusercontent.com/K4rakara/schema-valley/master/schema_valley.schema.json",
 	"Format": "1.13.0",
 	"Changes": [
-		// Extended spritesheets for all characters.
-		{
-			"Action": "EditImage",
-			"Target": "Characters/Abigail",
-			"FromFile": "./assets/Characters/Abigail.png"
-		},
-
-		// Spouse cuddle event data.
+		// Spouse cuddle event
+		// ===============================================================
 		{
 			"Action": "EditData",
 			"Target": "Data/Events/FarmHouse",
-			"FromFile": "./assets/Data/Events/spouse-cuddle-event.json"
+			"FromFile": "assets/Data/Events/spouse-cuddle-event.json"
+		},
+		// In order to avoid issues, the sprite patches for this event
+		// have to be applied only when the event is active, and it has to
+		// be done in overwrite mode.
+		{
+			"Action": "EditImage",
+			"Target": "Characters/Abigail",
+			"FromFile": "assets/Characters/Abigail.png",
+			"When": {
+				"k4rakara.Unnamed/DoSpouseCuddleEvent": "1"
+			}
 		}
 	]
 } 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
+		<EnableModDeploy>false</EnableModDeploy>
         <AssemblyName>Unnamed</AssemblyName>
         <RootNamespace>k4rakara.Stardew.Unnamed</RootNamespace>
         <ReleaseVersion>1.0.0</ReleaseVersion>
@@ -44,6 +45,8 @@
     <ItemGroup>
         <Compile Include="ModEntry.cs" />
 		<Compile Include="ContentPatcherAPI.cs" />
+		<Compile Include="EventIds.cs" />
+		<Compile Include="EventTimer.cs" />
     </ItemGroup>
     <ItemGroup>
     </ItemGroup>

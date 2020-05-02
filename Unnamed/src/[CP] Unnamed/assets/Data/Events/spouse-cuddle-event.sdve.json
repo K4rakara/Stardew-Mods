@@ -8,15 +8,15 @@
 	"Preconditions": [
 		{
 			"Type": "Context:Random",
-			"Number": "{{${ModName}/DoSpouseCuddleCutscene}}"
+			"Number": "{{${ModName}/DoSpouseCuddleEvent}}"
 		}
 	],
 	"Script": [
 		"Skippable",
 		{ "Type": "InitCameraAt", "X": 28, "Y": 13},
-		{ "Type": "InitMusic", "TrackId": "none" },
+		{ "Type": "InitMusic", "TrackId": "nightTime" },
 		{ "Type": "InitActorAt", "Name": "farmer", "X": 27, "Y": 13, "Direction": 1 },
-		{ "Type": "SetPlayerEyes", "Eyes": 0, "Blink": -1000 },
+		{ "Type": "SetPlayerEyes", "Eyes": 1, "Blink": -1 },
 		{ "Type": "OffsetActorBy", "Name": "farmer", "X": 32, "Y": -8 },
 		{ "Type": "InitActorAt", "Name": "${Spouse}", "X": 29, "Y": 13, "Direction": 3 },
 		{ "Type": "ShowActorSprite", "Name": "${Spouse}", "Frame": 60 },
@@ -24,10 +24,10 @@
 		{ "Type": "Fade", "Unfade": true },
 		{ "Type": "Pause", "Duration": 3000 },
 		{ "Type": "ShakeActor", "Name": "${Spouse}", "Duration": 500 },
-		{ "Type": "PlaySound", "SoundId": "sandyStep" },
+		{ "Type": "PlaySound", "SoundId": "grassyStep" },
 		{ "Type": "Pause", "Duration": 750 },
 		{ "Type": "ShakeActor", "Name": "${Spouse}", "Duration": 750 },
-		{ "Type": "PlaySound", "SoundId": "sandyStep" },
+		{ "Type": "PlaySound", "SoundId": "grassyStep" },
 		{ "Type": "Pause", "Duration": 1250 },
 		{ "Type": "ShowActorSprite", "Name": "${Spouse}", "Frame": 60 },
 		{ "Type": "Pause", "Duration": 125 },
@@ -49,8 +49,10 @@
 		{ "Type": "PlaySound", "SoundId": "sandyStep" },
 		{ "Type": "ShowActorSprite", "Name": "${Spouse}", "Frame": 62 },
 		{ "Type": "Pause", "Duration": 750 },
-		{ "Type": "ActorEmote", "Name": "${Spouse}", "EmoteId": 20 },
+		{ "Type": "ShowTextAboveActorHead", "Name": "${Spouse}", "Text": "<" },
+		{ "Type": "PlaySound", "SoundId": "dwop" },
 		{ "Type": "Pause", "Duration": 2000 },
+		{ "Type": "ShowActorSprite", "Name": "${Spouse}", "Frame": 62 },
 		"End"
 	]
 }
