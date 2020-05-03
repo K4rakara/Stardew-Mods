@@ -44,9 +44,10 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="ModEntry.cs" />
-		<Compile Include="ContentPatcherAPI.cs" />
-		<Compile Include="EventIds.cs" />
-		<Compile Include="EventTimer.cs" />
+		<Compile Include="src/ContentPatcherAPI.cs" />
+		<Compile Include="src/ContentPatcherIBool.cs" />
+		<Compile Include="src/EventIds.cs" />
+		<Compile Include="src/EventTimer.cs" />
     </ItemGroup>
     <ItemGroup>
     </ItemGroup>

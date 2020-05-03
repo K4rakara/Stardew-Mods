@@ -124,7 +124,7 @@ namespace Unnamed
 							child.Position = new Vector2(16f, 4f) * 64f + new Vector2(0f, -24f);
 						}
 					}
-					else if (child.age == 3)
+					else if (child.Age == 3)
 					{
 						Point randomOpenPointInHouse2 = (child.currentLocation as FarmHouse).getRandomOpenPointInHouse(r, 1, 60);
 						if (!randomOpenPointInHouse2.Equals(Point.Zero))
@@ -139,26 +139,6 @@ namespace Unnamed
 					}
 				}
 			}
-		}
-	}
-
-	public class ContentPatcherIBool: IEnumerable<string> {
-		List<string> _elements;
-
-		public ContentPatcherIBool(bool value)
-		{
-			string[] valueArray = {((value) ? "1" : "0")};
-			this._elements = new List<string>(valueArray);
-		}
-
-		IEnumerator<string> IEnumerable<string>.GetEnumerator()
-		{
-			return this._elements.GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return this._elements.GetEnumerator();
 		}
 	}
 }
