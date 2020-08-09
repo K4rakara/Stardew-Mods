@@ -16,14 +16,14 @@ namespace JoJa84Plus
 	{
 		public SButton HotKey { get; set; }
 		public bool EnableHotKey { get; set; }
-        public bool EnableMobileApp { get; set; }
+		public bool EnableMobileApp { get; set; }
 		public Color AppBackgroundColor { get; set; }
-        public Color InputColor { get; set; }
+		public Color InputColor { get; set; }
 		public Color PrevInputColor { get; set; }
 		public int AppMarginX { get; set; }
-        public int AppMarginY { get; set; }
+		public int AppMarginY { get; set; }
 
-        public ModConfig()
+		public ModConfig()
 		{
 			HotKey = SButton.F9;
 			EnableHotKey = true;
@@ -42,9 +42,9 @@ namespace JoJa84Plus
 		private bool CalcOpen = false;
 		private ModConfig Config;
 		private JoJa84PlusMenu menu;
-        public static IMobilePhoneApi api;
+		public static IMobilePhoneApi api;
 
-        public override void Entry(IModHelper helper)
+		public override void Entry(IModHelper helper)
 		{
 			// Load config.
 			Config = Helper.ReadConfig<ModConfig>();
@@ -59,8 +59,8 @@ namespace JoJa84Plus
 		}
 		private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
 		{
-            if (Config.EnableMobileApp)
-            {
+			if (Config.EnableMobileApp)
+			{
 				api = Helper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone");
 				if (api != null)
 				{
