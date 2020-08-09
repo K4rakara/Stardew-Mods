@@ -18,6 +18,9 @@ namespace JoJa84Plus
         public bool EnableApp { get; set; }
         public Color AppBackgroundColor { get; set; }
         public Color InputColor { get; set; }
+		public Color PrevInputColor { get; set; }
+		public int AppMarginX { get; set; }
+        public int AppMarginY { get; set; }
 
         public ModConfig()
 		{
@@ -25,6 +28,9 @@ namespace JoJa84Plus
 			EnableApp = true;
 			AppBackgroundColor = Color.Tan;
 			InputColor = Color.Black;
+			PrevInputColor = new Color(50, 50, 50);
+			AppMarginX = 5;
+			AppMarginY = 5;
 		}
 	}
 

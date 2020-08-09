@@ -92,10 +92,10 @@ namespace JoJa84Plus
             }
 
 			Rectangle screenRect = api.GetScreenRectangle();
-			xPositionOnScreen = screenRect.X;
-			yPositionOnScreen = screenRect.Y;
-			widthOnScreen = screenRect.Width;
-			heightOnScreen = screenRect.Height;
+			xPositionOnScreen = screenRect.X + config.AppMarginX;
+			yPositionOnScreen = screenRect.Y + config.AppMarginY;
+			widthOnScreen = screenRect.Width - config.AppMarginX * 2;
+			heightOnScreen = screenRect.Height - config.AppMarginY * 2;
 
 			numpad.Clear();
 			opButtons.Clear();
@@ -117,7 +117,7 @@ namespace JoJa84Plus
 								yPositionOnScreen
 									+ buttonWidth * iy
 									+ (Game1.smallFont.LineSpacing * 4)
-									+ (((widthOnScreen) / 4) * 3) / 16,
+									+ (heightOnScreen) / 16,
 								buttonWidth - 2,
 								buttonWidth - 2
 							),
@@ -165,10 +165,10 @@ namespace JoJa84Plus
 			(
 				new Rectangle
 				(
-					xPositionOnScreen
-						+ 40,
+					xPositionOnScreen,
 					yPositionOnScreen
-						+ (Game1.smallFont.LineSpacing * 2),
+						+ (Game1.smallFont.LineSpacing * 2)
+						+ config.AppMarginY,
 					(widthOnScreen) / 2 - 1,
 					Game1.smallFont.LineSpacing * 2
 				),
@@ -185,7 +185,8 @@ namespace JoJa84Plus
 						+ 1
 						+ (widthOnScreen) / 2,
 					yPositionOnScreen
-						+ (Game1.smallFont.LineSpacing * 2),
+						+ (Game1.smallFont.LineSpacing * 2)
+						+ config.AppMarginY,
 					(widthOnScreen) / 2,
 					Game1.smallFont.LineSpacing * 2
 				),
@@ -201,8 +202,7 @@ namespace JoJa84Plus
 					xPositionOnScreen,
 					yPositionOnScreen
 						+ Game1.smallFont.LineSpacing * 2
-						+ (widthOnScreen)
-						+ (((widthOnScreen) / 4) * 3) / 16,
+						+ (heightOnScreen) * 9 / 16,
 					((widthOnScreen) / 4) * 3,
 					Game1.smallFont.LineSpacing * 2
 				),
@@ -219,10 +219,10 @@ namespace JoJa84Plus
 				ModEntry.jojaLogo,
 				new Vector2
 				(
-					(float)xPositionOnScreen,
+					(float)xPositionOnScreen
+						+ 20,
 					(float)yPositionOnScreen
 						+ heightOnScreen
-						- 40
 				),
 				new Rectangle(0, 0, 42, 16),
 				Color.White,
@@ -241,7 +241,6 @@ namespace JoJa84Plus
 				new Vector2(
 					(float)xPositionOnScreen
 						+ widthOnScreen
-						- 40
 						- Game1.smallFont.MeasureString((currentInput) ? inputB + "|" : inputA + "|").X,
 					(float)yPositionOnScreen
 				),
@@ -270,12 +269,11 @@ namespace JoJa84Plus
 					(
 						(float)xPositionOnScreen
 							+ widthOnScreen
-							- 40
 							- Game1.smallFont.MeasureString(prevInput).X,
 						(float)yPositionOnScreen
-							+ Game1.smallFont.LineSpacing * 2
+							+ Game1.smallFont.LineSpacing
 					),
-					Game1.textShadowColor
+					config.PrevInputColor
 				);
 			}
 
@@ -457,7 +455,12 @@ namespace JoJa84Plus
 
 		private static void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
 		{
-			if(e.Button == SButton.MouseLeft)
+			if (!api.GetPhoneOpened() || !api.GetAppRunning() || api.GetRunningApp() != helper.ModRegistry.ModID || !api.GetScreenRectangle().Contains(Game1.getMousePosition()))
+				return;
+
+			helper.Input.Suppress(e.Button);
+
+			if (e.Button == SButton.MouseLeft)
             {
 				int x = Game1.getMouseX();
 				int y = Game1.getMouseY();
