@@ -28,7 +28,7 @@ namespace JoJa84Plus
 			EnableApp = true;
 			AppBackgroundColor = Color.Tan;
 			InputColor = Color.Black;
-			PrevInputColor = new Color(50, 50, 50);
+			PrevInputColor = new Color(100, 100, 100);
 			AppMarginX = 5;
 			AppMarginY = 5;
 		}

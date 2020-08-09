@@ -106,6 +106,7 @@ namespace JoJa84Plus
 				for (int ix = 0; ix < 3; ix++)
 				{
 					int buttonWidth = (widthOnScreen / 4) - 2;
+					int buttonHeight = (heightOnScreen * 9 / 16 / 4) - 2;
 					numpad.Add
 					(
 						new ClickableComponent
@@ -115,11 +116,12 @@ namespace JoJa84Plus
 								xPositionOnScreen
 									+ buttonWidth * ix,
 								yPositionOnScreen
-									+ buttonWidth * iy
+									+ buttonHeight * iy
 									+ (Game1.smallFont.LineSpacing * 4)
+									+ config.AppMarginY
 									+ (heightOnScreen) / 16,
 								buttonWidth - 2,
-								buttonWidth - 2
+								buttonHeight - 2
 							),
 							(Math.Abs(((3 - iy) * 3) + ix - 2)).ToString()
 						)
@@ -131,6 +133,7 @@ namespace JoJa84Plus
 			for (int i = 0; i < 6; i++)
 			{
 				int xOffset = ((widthOnScreen) / 4) * 3;
+				int yOffset = ((heightOnScreen) * 9 / 16 / 4) * 3;
 				opButtons.Add
 				(
 					new ClickableComponent
@@ -141,10 +144,12 @@ namespace JoJa84Plus
 								+ xOffset
 								+ xOffset / 16,
 							yPositionOnScreen
-								+ ((xOffset) / 4) * i
-								+ (Game1.smallFont.LineSpacing * 4),
+								+ ((yOffset) / 4) * i
+								+ (Game1.smallFont.LineSpacing * 4)
+								+ config.AppMarginY
+								+ (heightOnScreen) / 16,
 							xOffset / 4 - 2,
-							xOffset / 4 - 2
+							yOffset / 4 - 2
 						),
 						i switch
 						{
@@ -168,7 +173,7 @@ namespace JoJa84Plus
 					xPositionOnScreen,
 					yPositionOnScreen
 						+ (Game1.smallFont.LineSpacing * 2)
-						+ config.AppMarginY,
+						+ (heightOnScreen) / 16,
 					(widthOnScreen) / 2 - 1,
 					Game1.smallFont.LineSpacing * 2
 				),
@@ -186,7 +191,7 @@ namespace JoJa84Plus
 						+ (widthOnScreen) / 2,
 					yPositionOnScreen
 						+ (Game1.smallFont.LineSpacing * 2)
-						+ config.AppMarginY,
+						+ (heightOnScreen) / 16,
 					(widthOnScreen) / 2,
 					Game1.smallFont.LineSpacing * 2
 				),
@@ -201,8 +206,8 @@ namespace JoJa84Plus
 				(
 					xPositionOnScreen,
 					yPositionOnScreen
-						+ Game1.smallFont.LineSpacing * 2
-						+ (heightOnScreen) * 9 / 16,
+						+ Game1.smallFont.LineSpacing * 4
+						+ (heightOnScreen) / 2,
 					((widthOnScreen) / 4) * 3,
 					Game1.smallFont.LineSpacing * 2
 				),
@@ -223,6 +228,7 @@ namespace JoJa84Plus
 						+ 20,
 					(float)yPositionOnScreen
 						+ heightOnScreen
+						- ModEntry.jojaLogo.Height * 2
 				),
 				new Rectangle(0, 0, 42, 16),
 				Color.White,
@@ -272,6 +278,7 @@ namespace JoJa84Plus
 							- Game1.smallFont.MeasureString(prevInput).X,
 						(float)yPositionOnScreen
 							+ Game1.smallFont.LineSpacing
+							+ config.AppMarginY
 					),
 					config.PrevInputColor
 				);
