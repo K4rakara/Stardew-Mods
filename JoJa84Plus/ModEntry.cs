@@ -14,9 +14,10 @@ namespace JoJa84Plus
 {
 	public class ModConfig
 	{
-		public string HotKey { get; set; }
-        public bool EnableApp { get; set; }
-        public Color AppBackgroundColor { get; set; }
+		public SButton HotKey { get; set; }
+		public bool EnableHotKey { get; set; }
+        public bool EnableMobileApp { get; set; }
+		public Color AppBackgroundColor { get; set; }
         public Color InputColor { get; set; }
 		public Color PrevInputColor { get; set; }
 		public int AppMarginX { get; set; }
@@ -24,9 +25,10 @@ namespace JoJa84Plus
 
         public ModConfig()
 		{
-			HotKey = "F9";
-			EnableApp = true;
-			AppBackgroundColor = Color.Tan;
+			HotKey = SButton.F9;
+			EnableHotKey = true;
+			EnableMobileApp = true;
+			AppBackgroundColor = new Color(255, 200, 120);
 			InputColor = Color.Black;
 			PrevInputColor = new Color(100, 100, 100);
 			AppMarginX = 5;
@@ -57,7 +59,7 @@ namespace JoJa84Plus
 		}
 		private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
 		{
-            if (Config.EnableApp)
+            if (Config.EnableMobileApp)
             {
 				api = Helper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone");
 				if (api != null)
@@ -82,8 +84,8 @@ namespace JoJa84Plus
 			if (!Context.IsWorldReady)
 				return;
 
-			// If the player presses F5, then open/close the calculator.
-			if (e.Button == (SButton)Enum.Parse(typeof(SButton), Config.HotKey))
+			// If the player presses F9, then open/close the calculator.
+			if (e.Button == Config.HotKey && Config.EnableHotKey)
 			{
 				CalcOpen = !CalcOpen;
 				if (CalcOpen)
