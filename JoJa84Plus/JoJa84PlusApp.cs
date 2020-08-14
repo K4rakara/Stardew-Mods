@@ -97,6 +97,12 @@ namespace JoJa84Plus
 			widthOnScreen = screenRect.Width - config.AppMarginX * 2;
 			heightOnScreen = screenRect.Height - config.AppMarginY * 2;
 
+			int textHeight = (Game1.smallFont.LineSpacing + config.AppMarginY) * (api.GetPhoneRotated() ? 1 : 2);
+			int spaceBelowText = heightOnScreen - textHeight;
+			int buttonHeight1 = spaceBelowText / 5; 
+			int buttonHeight2 = (spaceBelowText - buttonHeight1) / 6; 
+
+
 			numpad.Clear();
 			opButtons.Clear();
 
@@ -106,7 +112,6 @@ namespace JoJa84Plus
 				for (int ix = 0; ix < 3; ix++)
 				{
 					int buttonWidth = (widthOnScreen / 4) - 2;
-					int buttonHeight = (heightOnScreen * 9 / 16 / 4) - 2;
 					numpad.Add
 					(
 						new ClickableComponent
@@ -116,12 +121,10 @@ namespace JoJa84Plus
 								xPositionOnScreen
 									+ buttonWidth * ix,
 								yPositionOnScreen
-									+ buttonHeight * iy
-									+ (Game1.smallFont.LineSpacing * 4)
-									+ config.AppMarginY
-									+ (heightOnScreen) / 16,
+									+ buttonHeight1 * (iy + 1)
+									+ textHeight,
 								buttonWidth - 2,
-								buttonHeight - 2
+								buttonHeight1 - 2
 							),
 							(Math.Abs(((3 - iy) * 3) + ix - 2)).ToString()
 						)
@@ -144,12 +147,11 @@ namespace JoJa84Plus
 								+ xOffset
 								+ xOffset / 16,
 							yPositionOnScreen
-								+ ((yOffset) / 4) * i
-								+ (Game1.smallFont.LineSpacing * 4)
-								+ config.AppMarginY
-								+ (heightOnScreen) / 16,
+								+ (buttonHeight2) * i
+								+ textHeight
+								+ buttonHeight1,
 							xOffset / 4 - 2,
-							yOffset / 4 - 2
+							buttonHeight2 - 2
 						),
 						i switch
 						{
@@ -172,10 +174,9 @@ namespace JoJa84Plus
 				(
 					xPositionOnScreen,
 					yPositionOnScreen
-						+ (Game1.smallFont.LineSpacing * 2)
-						+ (heightOnScreen) / 16,
+						+ textHeight,
 					(widthOnScreen) / 2 - 1,
-					Game1.smallFont.LineSpacing * 2
+					buttonHeight1 - 2
 				),
 				"clear",
 				"Clear"
@@ -190,26 +191,27 @@ namespace JoJa84Plus
 						+ 1
 						+ (widthOnScreen) / 2,
 					yPositionOnScreen
-						+ (Game1.smallFont.LineSpacing * 2)
-						+ (heightOnScreen) / 16,
+						+ textHeight,
 					(widthOnScreen) / 2,
-					Game1.smallFont.LineSpacing * 2
+					buttonHeight1 -2
 				),
 				"backspace",
 				"Back"
 			);
+
+			Point jjlSize = api.GetPhoneRotated() ? new Point(ModEntry.jojaLogoL.Width, ModEntry.jojaLogoL.Height) : new Point(ModEntry.jojaLogo.Width, ModEntry.jojaLogo.Height);
 
 			// Create the zero button.
 			zeroButton = new ClickableComponent
 			(
 				new Rectangle
 				(
-					xPositionOnScreen,
+					xPositionOnScreen 
+						+ jjlSize.X * 2,
 					yPositionOnScreen
-						+ Game1.smallFont.LineSpacing * 4
-						+ (heightOnScreen) / 2,
-					((widthOnScreen) / 4) * 3,
-					Game1.smallFont.LineSpacing * 2
+						+ textHeight + buttonHeight1 * 4,
+					((widthOnScreen) / 4) * 3 - jjlSize.X * 2 - 4,
+					buttonHeight1 - 2
 				),
 				"0",
 				"0"
@@ -221,14 +223,14 @@ namespace JoJa84Plus
 
 			// Draw JoJa watermark thing.
 			b.Draw(
-				ModEntry.jojaLogo,
+				api.GetPhoneRotated() ? ModEntry.jojaLogoL : ModEntry.jojaLogo,
 				new Vector2
 				(
-					(float)xPositionOnScreen
-						+ 20,
+					(float)xPositionOnScreen,
 					(float)yPositionOnScreen
 						+ heightOnScreen
-						- ModEntry.jojaLogo.Height * 2
+						- buttonHeight1 / 2
+						- jjlSize.Y
 				),
 				new Rectangle(0, 0, 42, 16),
 				Color.White,
@@ -239,11 +241,13 @@ namespace JoJa84Plus
 				0f
 			);
 
+			string inputOut = String.Concat(((currentInput) ? inputB : inputA), ((timer >= 16) ? "|" : ""));
+
 			// Draw the current input.
 			b.DrawString
 			(
 				Game1.smallFont,
-				String.Concat(((currentInput) ? inputB : inputA), ((timer >= 16) ? "|" : "")),
+				inputOut,
 				new Vector2(
 					(float)xPositionOnScreen
 						+ widthOnScreen
@@ -275,10 +279,9 @@ namespace JoJa84Plus
 					(
 						(float)xPositionOnScreen
 							+ widthOnScreen
-							- Game1.smallFont.MeasureString(prevInput).X,
+							- Game1.smallFont.MeasureString(prevInput).X - (api.GetPhoneRotated() ? (Game1.smallFont.MeasureString(inputOut).X + config.AppMarginX) : 0) - ((timer >= 16) ? 1 : 0),
 						(float)yPositionOnScreen
-							+ Game1.smallFont.LineSpacing
-							+ config.AppMarginY
+							+ (api.GetPhoneRotated() ? 0 : (Game1.smallFont.LineSpacing + config.AppMarginY))
 					),
 					config.PrevInputColor
 				);
