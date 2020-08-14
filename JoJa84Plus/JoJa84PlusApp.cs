@@ -97,12 +97,11 @@ namespace JoJa84Plus
 			widthOnScreen = screenRect.Width - config.AppMarginX * 2;
 			heightOnScreen = screenRect.Height - config.AppMarginY * 2;
 
-			int textHeight = (Game1.smallFont.LineSpacing + config.AppMarginY) * (api.GetPhoneRotated() ? 1 : 2);
+			bool rotated = api.GetPhoneRotated();
+			int textHeight = (Game1.smallFont.LineSpacing + config.AppMarginY) * (rotated ? 1 : 2);
 			int spaceBelowText = heightOnScreen - textHeight;
 			int buttonHeight1 = spaceBelowText / 5; 
-			int buttonHeight2 = (spaceBelowText - buttonHeight1) / 6; 
-
-
+			int buttonHeight2 = (spaceBelowText - buttonHeight1) / 6;
 			numpad.Clear();
 			opButtons.Clear();
 
@@ -199,7 +198,7 @@ namespace JoJa84Plus
 				"Back"
 			);
 
-			Point jjlSize = api.GetPhoneRotated() ? new Point(ModEntry.jojaLogoL.Width, ModEntry.jojaLogoL.Height) : new Point(ModEntry.jojaLogo.Width, ModEntry.jojaLogo.Height);
+			Point jjlSize = rotated ? new Point(ModEntry.jojaLogoL.Width, ModEntry.jojaLogoL.Height) : new Point(ModEntry.jojaLogo.Width, ModEntry.jojaLogo.Height);
 
 			// Create the zero button.
 			zeroButton = new ClickableComponent
@@ -207,7 +206,7 @@ namespace JoJa84Plus
 				new Rectangle
 				(
 					xPositionOnScreen 
-						+ jjlSize.X * 2,
+						+ jjlSize.X * (rotated?1:2),
 					yPositionOnScreen
 						+ textHeight + buttonHeight1 * 4,
 					((widthOnScreen) / 4) * 3 - jjlSize.X * 2 - 4,
@@ -219,24 +218,24 @@ namespace JoJa84Plus
 
 			SpriteBatch b = e.SpriteBatch;
 
-			b.Draw(api.GetPhoneRotated() ? backgroundLandscapeTexture : backgroundTexture, screenRect, Color.White);
+			b.Draw(rotated ? backgroundLandscapeTexture : backgroundTexture, screenRect, Color.White);
 
 			// Draw JoJa watermark thing.
 			b.Draw(
-				api.GetPhoneRotated() ? ModEntry.jojaLogoL : ModEntry.jojaLogo,
+				rotated ? ModEntry.jojaLogoL : ModEntry.jojaLogo,
 				new Vector2
 				(
 					(float)xPositionOnScreen,
 					(float)yPositionOnScreen
 						+ heightOnScreen
 						- buttonHeight1 / 2
-						- jjlSize.Y
+						- jjlSize.Y / (rotated ? 2 : 1)
 				),
 				new Rectangle(0, 0, 42, 16),
 				Color.White,
 				0f,
 				new Vector2(0f, 0f),
-				2f,
+				(rotated ? 1 : 2),
 				SpriteEffects.None,
 				0f
 			);
@@ -251,7 +250,7 @@ namespace JoJa84Plus
 				new Vector2(
 					(float)xPositionOnScreen
 						+ widthOnScreen
-						- Game1.smallFont.MeasureString((currentInput) ? inputB + "|" : inputA + "|").X,
+						- Game1.smallFont.MeasureString(inputOut).X,
 					(float)yPositionOnScreen
 				),
 				config.InputColor
@@ -279,9 +278,9 @@ namespace JoJa84Plus
 					(
 						(float)xPositionOnScreen
 							+ widthOnScreen
-							- Game1.smallFont.MeasureString(prevInput).X - (api.GetPhoneRotated() ? (Game1.smallFont.MeasureString(inputOut).X + config.AppMarginX) : 0) - ((timer >= 16) ? 1 : 0),
+							- Game1.smallFont.MeasureString(prevInput).X - (rotated ? (Game1.smallFont.MeasureString(inputOut).X + config.AppMarginX) : 0),
 						(float)yPositionOnScreen
-							+ (api.GetPhoneRotated() ? 0 : (Game1.smallFont.LineSpacing + config.AppMarginY))
+							+ (rotated ? 0 : (Game1.smallFont.LineSpacing + config.AppMarginY))
 					),
 					config.PrevInputColor
 				);
