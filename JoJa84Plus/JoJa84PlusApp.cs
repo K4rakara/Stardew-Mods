@@ -102,6 +102,7 @@ namespace JoJa84Plus
 			int spaceBelowText = heightOnScreen - textHeight;
 			int buttonHeight1 = spaceBelowText / 5; 
 			int buttonHeight2 = (spaceBelowText - buttonHeight1) / 6;
+
 			numpad.Clear();
 			opButtons.Clear();
 
