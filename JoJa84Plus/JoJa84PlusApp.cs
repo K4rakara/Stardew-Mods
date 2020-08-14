@@ -199,18 +199,16 @@ namespace JoJa84Plus
 				"Back"
 			);
 
-			Point jjlSize = rotated ? new Point(ModEntry.jojaLogoL.Width, ModEntry.jojaLogoL.Height) : new Point(ModEntry.jojaLogo.Width, ModEntry.jojaLogo.Height);
-
 			// Create the zero button.
 			zeroButton = new ClickableComponent
 			(
 				new Rectangle
 				(
 					xPositionOnScreen 
-						+ jjlSize.X * (rotated?1:2),
+						+ ModEntry.jojaLogo.Width + 4,
 					yPositionOnScreen
 						+ textHeight + buttonHeight1 * 4,
-					((widthOnScreen) / 4) * 3 - jjlSize.X * 2 - 4,
+					((widthOnScreen) / 4) * 3 - ModEntry.jojaLogo.Width - 12,
 					buttonHeight1 - 2
 				),
 				"0",
@@ -223,35 +221,30 @@ namespace JoJa84Plus
 
 			// Draw JoJa watermark thing.
 			b.Draw(
-				rotated ? ModEntry.jojaLogoL : ModEntry.jojaLogo,
+				ModEntry.jojaLogo,
 				new Vector2
 				(
-					(float)xPositionOnScreen,
-					(float)yPositionOnScreen
+					xPositionOnScreen,
+					yPositionOnScreen
 						+ heightOnScreen
 						- buttonHeight1 / 2
-						- jjlSize.Y / (rotated ? 2 : 1)
+						- ModEntry.jojaLogo.Height / 2
 				),
-				new Rectangle(0, 0, 42, 16),
-				Color.White,
-				0f,
-				new Vector2(0f, 0f),
-				(rotated ? 1 : 2),
-				SpriteEffects.None,
-				0f
+				Color.White
 			);
 
-			string inputOut = String.Concat(((currentInput) ? inputB : inputA), ((timer >= 16) ? "|" : ""));
+			string inputOut = currentInput ? inputB : inputA;
 
 			// Draw the current input.
 			b.DrawString
 			(
 				Game1.smallFont,
-				inputOut,
+				inputOut + ((timer >= 16) ? "|" : ""),
 				new Vector2(
 					(float)xPositionOnScreen
 						+ widthOnScreen
-						- Game1.smallFont.MeasureString(inputOut).X,
+						- Game1.smallFont.MeasureString(inputOut).X
+						- config.AppMarginX,
 					(float)yPositionOnScreen
 				),
 				config.InputColor
@@ -279,7 +272,9 @@ namespace JoJa84Plus
 					(
 						(float)xPositionOnScreen
 							+ widthOnScreen
-							- Game1.smallFont.MeasureString(prevInput).X - (rotated ? (Game1.smallFont.MeasureString(inputOut).X + config.AppMarginX) : 0),
+							- Game1.smallFont.MeasureString(prevInput).X 
+							- (rotated ? (Game1.smallFont.MeasureString(inputOut).X + config.AppMarginX) : 0)
+							- config.AppMarginX,
 						(float)yPositionOnScreen
 							+ (rotated ? 0 : (Game1.smallFont.LineSpacing + config.AppMarginY))
 					),

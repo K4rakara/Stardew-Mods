@@ -39,7 +39,6 @@ namespace JoJa84Plus
 	public class ModEntry: Mod
 	{
 		public static Texture2D jojaLogo;
-		public static Texture2D jojaLogoL;
 		private bool CalcOpen = false;
 		private ModConfig Config;
 		private JoJa84PlusMenu menu;
@@ -56,8 +55,7 @@ namespace JoJa84Plus
 			Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 
 			// Load the JoJa 84+ logo
-			jojaLogo = helper.Content.Load<Texture2D>("assets/joja84plus.png");
-			jojaLogoL = helper.Content.Load<Texture2D>("assets/app_icon.png");
+			jojaLogo = helper.Content.Load<Texture2D>("assets/app_icon.png");
 		}
 		private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
 		{
