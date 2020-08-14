@@ -205,10 +205,10 @@ namespace JoJa84Plus
 				new Rectangle
 				(
 					xPositionOnScreen 
-						+ ModEntry.jojaLogo.Width + 4,
+						+ ModEntry.jojaAppLogo.Width + 4,
 					yPositionOnScreen
 						+ textHeight + buttonHeight1 * 4,
-					((widthOnScreen) / 4) * 3 - ModEntry.jojaLogo.Width - 12,
+					((widthOnScreen) / 4) * 3 - ModEntry.jojaAppLogo.Width - 12,
 					buttonHeight1 - 2
 				),
 				"0",
@@ -221,14 +221,14 @@ namespace JoJa84Plus
 
 			// Draw JoJa watermark thing.
 			b.Draw(
-				ModEntry.jojaLogo,
+				ModEntry.jojaAppLogo,
 				new Vector2
 				(
 					xPositionOnScreen,
 					yPositionOnScreen
 						+ heightOnScreen
 						- buttonHeight1 / 2
-						- ModEntry.jojaLogo.Height / 2
+						- ModEntry.jojaAppLogo.Height / 2
 				),
 				Color.White
 			);
