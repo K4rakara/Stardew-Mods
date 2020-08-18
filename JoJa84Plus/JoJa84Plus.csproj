@@ -42,13 +42,15 @@
     <Compile Include="ModEntry.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets/joja84plus.png" />
     <None Include="i18n\default.json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig">
       <Version>3.1.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="assets\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
